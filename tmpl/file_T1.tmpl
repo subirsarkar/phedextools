@@ -1,0 +1,235 @@
+[% BLOCK header ~%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  
+   "http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+  <head>
+    <title> Phedex request details for Datasets at  [% site %]</title>
+    <meta http-equiv="refresh" content="1800" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <link rel="stylesheet" href="jquery/css/custom-theme/jquery-ui-1.8.10.custom.css" type="text/css"></link>
+    <link rel="stylesheet" href="jquery/dataTables/media/css/demo_table.css" type="text/css"></link>
+    <link rel="stylesheet" href="css/style.css" type="text/css"></link>
+    <script type="text/javascript" src="jquery/js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="jquery/js/jquery-ui-1.8.10.custom.min.js"></script>
+    <script type="text/javascript" src="jquery/js/jquery.quicksearch.js"></script>
+    <script type="text/javascript" src="js/sorttable.js"></script>
+    <script type="text/javascript" src="js/page.js"></script>
+  </head>
+  <body>
+    <div class="panel-header">
+      <label>Last updated at: [% timestamp %]</label>
+    </div>
+    <div>
+      <div id="tabpanel">
+        <ul>
+          <li><a href="#tab-a1"><span>Summary</span></a></li>
+          <li><a href="#tab-a2"><span>Dataset</span></a></li>
+          <li><a href="#tab-a3"><span>Requester</span></a></li>
+          <li><a href="#tab-a4"><span>Group</span></a></li>
+          <li><a href="#tab-a5"><span>QuickSearch</span></a></li>
+        </ul>
+[%~ END %]
+[% BLOCK summary_header %]
+        <div id="tab-a1">
+	  <div align="center">
+            <h2 class="title" style="width:40%;">Summary of Storage at [% site %]</h2>
+            <div style="width:100%;">
+              <table class="sitesummary" style="width:300px;">
+                <caption><b>Site Summary</b></caption>
+                <tbody>
+                  <tr><th>SE</th><td>[% se %]</td></tr>
+                  <tr><th>Storage Used</th><td>[% storage_total %] TB</td></tr>
+                  <tr><th>Total Datasets</th><td>[% n_datasets %]</td></tr>
+                  <tr><th>Total files</th><td>[% n_files %]</td></tr>
+                </tbody>
+              </table>
+              <table style="width:550px;">
+                <caption><b>Group Usage Summary</b></caption>
+                <tbody>
+                  <tr>
+                    <th style="width:140px;"></th>
+                    <th style="width:160px;" colspan="2">Subscribed</th>
+                    <th style="width:160px;" colspan="2">Resident</th>
+                    <th></th>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="groupusage sortable" style="width:550px;">
+                <thead>
+                  <tr><th>Group</th><th>Space (GB)</th><th>Files</th><th>Space (GB)</th><th>Files</th><th>Dataset</th></tr>
+                </thead>
+                <tbody>
+[%~ END %]
+[% BLOCK summary_row %]
+                  <tr>
+                    <td>[% group %]</td>
+                    <td>[% subscribed_space %]</td><td>[% subscribed_files %]</td>
+                    <td>[% resident_space %]</td><td>[% resident_files %]</td>
+                    <td>[% dataset %]</td>
+                  </tr>
+[%~ END %]
+[% BLOCK summary_footer %]
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>[% group %]</td>
+                    <td>[% subscribed_space %]</td><td>[% subscribed_files %]</td>
+                    <td>[% resident_space %]</td><td>[% resident_files %]</td>
+                    <td>[% dataset %]</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+[%~ END %]
+[% BLOCK dataset_header %]
+        <div id="tab-a2">
+          <div align="center" style="width:80%;">        
+            <h2 class="title" style="width:60%;">Transfer Request Details for Datasets at [% site %]</h2>
+            <div class="accordion">
+[%~ END %]
+[% BLOCK dataset_row_header %]
+              <h3><a>[% dataset %] ([% size %] GB)</a></h3>
+              <div class="dataset">
+                <table>
+                  <caption><b>Request Details</b></caption>
+                  <tr><th>ID</th>
+                    <td><a class="link" href="https://cmsweb.cern.ch/phedex/prod/Request::View?request=[%request_id%]">[%request_id%]</a></td>
+                  </tr>
+                  <tr><th>Blocks</th><td>[% blocks %]</td></tr>
+                  <tr><th>Files</th><td>[% files %]</td></tr>
+                  <tr><th>Size</th><td>[% size %] GB</td></tr>
+                  <tr><th>Custodial</th><td>[% is_custodial %]</td></tr>
+                  <tr><th>Replica Location</th><td><div>[% replica_location %] [static]</div></td></tr>
+[%~ END %]
+[% BLOCK dataset_row_request %]
+                  <tr><th colspan=2><b>Request</b></th></tr>
+                  <tr><th>Requester</th><td>[% reqname %]</td></tr>
+                  <tr><th>E-mail</th><td>[% reqmail %]</td></tr>
+                  <tr><th>ID</th><td>[% reqid %]</td></tr>
+                  <tr><th>Time</th><td>[% reqtime %]</td></tr>
+                  <tr><th>Comment</th><td><span>[% reqcomment %]</span></td></tr>
+                  <tr><th>Group</th><td>[% group %]</td></tr>
+                  <tr><th colspan=2><b>Approval</b></th></tr>
+                  <tr><th>Approver</th><td>[% appname %]</td></tr>
+                  <tr><th>E-mail</th><td>[% appmail %]</td></tr>
+                  <tr><th>ID</th><td>[% appid %]</td></tr>
+                  <tr><th>Time</th><td>[% apptime %]</td></tr>
+                  <tr><th>Comment</th><td><span>Approved: [% appcomment %]</span></td></tr>
+                  <tr><th colspan=2><b>Transfer Status</b></th></tr>
+                  <tr><th>Overall</th><td>[% dset_status %]</td></tr>
+                  <tr><th>Size</th><td>[% size_status %]</td></tr>
+                  <tr><th>Blocks</th><td>[% block_status %]</td></tr>
+                  <tr><th>Files</th><td>[% file_status %]</td></tr>
+[%~ END %]
+[% BLOCK dataset_row_footer %]
+                </table>
+                <div>
+                  <a href="https://cmsweb.cern.ch/phedex/prod/Request::Create?type=delete&dbschoice=known&data=[%dataset%]&nodes=[%se%]">Delete</a>
+                  <a href="https://cmsweb.cern.ch/phedex/prod/Request::Create?type=xfer&dbschoice=known&data=[%dataset%]">Transfer</a>
+                  <a href="http://cmsweb.cern.ch/phedex/prod/Data::Replicas?rcolumn=Name&dcolumn=Blocks&rcolumn=Files&rcolumn=Bytes&nvalue=Node+files&view=global&filter=[%dataset%]&node=[%nodeid%]">Transfer Status</a>
+                  <a href="https://cmsweb.cern.ch/dbs_discovery/aSearch?caseSensitive=on&userMode=user&sortOrder=desc&sortName=&grid=0&method=dbsapi&dbsInst=cms_dbs_prod_global&userInput=[%dataset%]">DBS Info</a>
+                </div>
+              </div>
+[%~ END %]
+[% BLOCK requester_header %]
+            </div>
+          </div>
+        </div>
+        <div id="tab-a3">
+          <div align="center" style="width:88%;">        
+            <h2 class="title">List of Requesters</h2>
+            <div class="accordion">
+[%~ END %]
+[% BLOCK requester_row_header %]
+              <h3><a>[% reqname %] (datasets = [%n_datasets%], storage = [%storage_tot%] GB)</a></h3>
+              <div class="requester">
+                <table class="sortable">
+                  <caption><b>Datasets</b></caption>
+                  <thead>
+                    <tr><th>Name</th><th>Group</th><th>Size (GB)</th><th>Requested at</th><th>Custodial</th></tr>
+                  </thead>
+                  <tbody>
+[%~ END %]
+[% BLOCK requester_row_data %]
+                    <tr><td>[%dataset%]</td><td>[%group%]</td><td>[%size%]</td><td>[%reqtime%]</td><td>[%is_custodial%]</td></tr>
+[%~ END %]
+[% BLOCK requester_row_footer %]
+                  </tbody>
+                </table>
+              </div>
+[%~ END %]
+[% BLOCK requester_footer %]
+            </div>
+          </div>
+        </div>
+[%~ END %]
+[% BLOCK group_header %]
+        <div id="tab-a4">
+          <div align="center" style="width:88%;">        
+            <h2 class="title">List of Groups</h2>
+            <div class="accordion">
+[%~ END %]
+[% BLOCK group_row_header %]
+              <h3><a>[% group %] (datasets = [%n_datasets%], storage = [%storage_tot%] GB)</a></h3>
+              <div class="group">
+                <table class="sortable">
+                  <caption><b>Datasets</b></caption>
+                  <thead>
+                    <tr><th>Name</th><th>Requester</th><th>Size (GB)</th><th>Requested at</th><th>Custodial</th></tr>
+                  </thead>
+                  <tbody>
+[%~ END %]
+[% BLOCK group_row_data %]
+                    <tr><td>[%dataset%]</td><td>[%reqname%]</td><td>[%size%]</td><td>[%reqtime%]</td><td>[%is_custodial%]</td></tr>
+[%~ END %]
+[% BLOCK group_row_footer %]
+                  </tbody>
+                </table>
+              </div>
+[%~ END %]
+[% BLOCK group_footer %]
+            </div>
+          </div>
+        </div>
+[%~ END %]
+[% BLOCK qs_header %]
+        <div id="tab-a5">
+          <div align="center" style="width:98%;">        
+            <div class="searchPanel">
+              <span style="float:left;">
+                <label>Quick Search:</label>
+                <input type="text" name="search" value="" id="id_search" class="searchInput" />
+              </span>
+              <span style="float:right;" class="loading">Loading...</span>
+            </div>
+            <table id="searchable" class="sortable">
+              <thead> 
+                <tr><th>Dataset</th><th>Requester</th><th>Group</th><th>Size (GB)</th><th>Requested at</th><th>Custodial</th></tr>
+              </thead>
+              <tbody>
+[%~ END %]
+[% BLOCK qs_row %]
+                <tr><td>[%dataset%]</td><td>[%reqname%]</td><td>[%group%]</td><td>[%size%]</td><td>[%reqtime%]</td><td>[%is_custodial%]</td></tr>
+[%~ END %]
+[% BLOCK qs_footer %]
+              </tbody>
+            </table>
+          </div>
+        </div>
+[%~ END %]
+[% BLOCK footer %]
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div style="float:left;">
+        <label>Developer: Subir Sarkar, INFN-Pisa</label>
+      </div>
+      <div style="float:right;">
+        <label>Powered by <a class="link" href="http://jquery.com">jQuery</a></label>
+      </div>
+    </div>
+  </body>
+</html>
+[% END %]
