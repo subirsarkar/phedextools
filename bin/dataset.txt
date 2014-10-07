@@ -1,0 +1,12 @@
+/W0jet-alpgen/CMSSW_1_5_2-CSA07-2203/GEN-SIM-DIGI-RECO              0.102 cmssrm.fnal.gov
+/Z0jet-alpgen/CMSSW_1_5_2-CSA07-1193756147/GEN-SIM-DIGI-RECO        0.102 ccsrm.in2p3.fr
+/W5jet_100ptw300-alpgen/CMSSW_1_5_2-CSA07-2225/GEN-SIM-DIGI-RECO    0.102 srm-cms.gridpp.rl.ac.uk
+/W1jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2219/GEN-SIM-DIGI-RECO      0.132 cmssrm.fnal.gov
+/W1jet_100ptw300-alpgen/CMSSW_1_5_2-CSA07-2220/GEN-SIM-DIGI-RECO    0.102 cmssrm.fnal.gov
+/W2jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2221/GEN-SIM-DIGI-RECO      0.102 srm-cms.gridpp.rl.ac.uk
+/W2jet_100ptw300-alpgen/CMSSW_1_5_2-CSA07-2222/GEN-SIM-DIGI-RECO    0.102 cmssrm.fnal.gov
+/W3jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2223/GEN-SIM-DIGI-RECO      0.102 cmssrm.fnal.gov
+/W3jet_100ptw300-alpgen/CMSSW_1_5_2-CSA07-2188/GEN-SIM-DIGI-RECO    0.122 cmssrm.fnal.gov
+/W4jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2206/GEN-SIM-DIGI-RECO      0.122 cmssrm.fnal.gov
+/W4jet_100ptw300-alpgen/CMSSW_1_5_2-CSA07-2189/GEN-SIM-DIGI-RECO    0.102 cmssrm.fnal.gov
+/W5jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2224/GEN-SIM-DIGI-RECO      0.122 srm-cms.gridpp.rl.ac.uk
