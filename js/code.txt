@@ -1,0 +1,19 @@
+//  var lines = response.split("\n");
+//  lines = jQuery.map(lines, function(a) {
+//    var b = jQuery.trim(a);
+//    if (b == '<head>') 
+//      return '<!--' + a;
+//    else if (b == '</head>') 
+//      return a + '-->';
+//    else 
+//      return a;
+//  });
+  //var i = jQuery.inArray('  <body>',  lines);
+  //var j = jQuery.inArray('  </body>', lines);
+  
+  //lines = jQuery.grep(lines, function(item, index) {
+  //  return (index > i && index < j);
+  //});
+
+
+//  $('#tabview-panel').append(lines.join("\n"));
