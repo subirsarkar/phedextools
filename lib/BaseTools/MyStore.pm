@@ -79,7 +79,7 @@ sub show
 __END__
 package main;
 my $file = shift || die qq|Usage: $0 dbfile|;
-my $obj  = new BaseTools::MyStore({ dbfile => $file });
+my $obj  = BaseTools::MyStore->new({ dbfile => $file });
 $obj->show;
 
 # -- Documentation starts
@@ -93,8 +93,8 @@ BaseTools::MyStore - A simple wrapper over C<Storable>
 =head1 SYNOPSIS
 
   use BaseTools::MyStore;
-  my $file = qq|my.db|;
-  my $obj  = new BaseTools::MyStore({ dbfile => $file });
+  my $file = q|my.db|;
+  my $obj  = BaseTools::MyStore->new({ dbfile => $file });
   $obj->show;
 
 =head1 REQUIRES

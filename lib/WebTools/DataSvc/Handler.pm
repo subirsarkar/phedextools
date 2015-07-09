@@ -17,7 +17,7 @@ sub new
   bless {
     _instance => $attr->{instance} || q|prod|,
      _verbose => $attr->{verbose} || 0,
-       _agent => new LWP::UserAgent
+       _agent => LWP::UserAgent->new
   }, $class;
 }
 sub content
@@ -53,6 +53,6 @@ sub content
 __END__
 package main;
 
-my $req = new WebTools::DataSvc::Handler;
+my $req = WebTools::DataSvc::Handler->new;
 my $content = $req->content({ cmd => q|nodes| });
 print Data::Dumper->Dump([$content], [qw/nodes/]);

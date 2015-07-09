@@ -43,7 +43,7 @@ sub blocks
   my $blk = {};
 
   # Instantiate an LWP User Agent to communicate through
-  my $agent = new LWP::UserAgent(timeout => 15);
+  my $agent = LWP::UserAgent->new(timeout => 15);
 
   my $query = sprintf $qFormat, qq|blockReplicas|, uri_escape(qq|$dataset*|);
   $query .= qq|&complete=$self->{_complete}| if $self->{_complete} ne 'na';
@@ -74,7 +74,7 @@ sub _filelist
 
   $self->{_info} = {};
   # Instantiate an LWP User Agent to communicate through
-  my $agent = new LWP::UserAgent(timeout => 15);
+  my $agent = LWP::UserAgent->new(timeout => 15);
 
   my $query = sprintf $qFormat, qq|blockReplicas|, uri_escape(qq|*|);
   $query .= qq|&complete=$self->{_complete}| if $self->{_complete} ne 'na';
@@ -143,7 +143,7 @@ sub info
 
 1;
 __END__
-my $files = new WebTools::PhedexFiles;
+my $files = WebTools::PhedexFiles->new;
 $files->show;
 
 # --- Documentation starts
@@ -156,7 +156,7 @@ WebTools::PhedexFiles - Queries the PhEDEx data service to prepare a list of fil
 =head1 SYNOPSIS
 
   use WebTools::PhedexFiles;
-  my $obj = new WebTools::PhedexFiles;
+  my $obj = WebTools::PhedexFiles->new;
   $obj->show;
 
 =head1 REQUIRES

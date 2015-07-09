@@ -44,6 +44,6 @@ sub wget
 1;
 __END__
 package main;
-my $obj = new WebTools::DataSvc::TransferQueueFiles({ instance => q|debug| });
+my $obj = WebTools::DataSvc::TransferQueueFiles->new({ instance => q|debug| });
 my $info = $obj->wget({ from => q|T2_IT_Pisa| });
 $obj->show;

@@ -14,7 +14,7 @@ sub new
 
   my $verbose = $attr->{verbose} || 0;
   bless {
-    _baseobj => new WebTools::DataSvc::Handler($attr),
+    _baseobj => WebTools::DataSvc::Handler->new($attr),
     _verbose => $verbose,
        _info => {}
   }, $class;

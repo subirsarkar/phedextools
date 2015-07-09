@@ -14,7 +14,7 @@ sub Content
    $debug = 0 unless defined $debug;
 
    # makes an object representing the URL
-   my $ua = new LWP::UserAgent;
+   my $ua = LWP::UserAgent->new;
    $ua->timeout(20);
 
    if (defined $params) {
@@ -26,7 +26,7 @@ sub Content
    }
 
    my $content = '';
-   my $uriObj = new URI($url);
+   my $uriObj = URI->new($url);
    my $response;
    eval {
      $response = $ua->get($uriObj);
@@ -57,14 +57,14 @@ sub Table
   my $query = $params->{url};
 
   my $h = [];
-  my $agent = new LWP::UserAgent(timeout => 15);
+  my $agent = LWP::UserAgent->new(timeout => 15);
   my $response = $agent->get($query);
   if ($response->is_success) {
     my $content = $response->content;
-    my $te = new HTML::TableExtract( depth => $params->{depth}, 
-                                     count => $params->{count}, 
-                                   gridmap => $params->{gridmap}, 
-                                 keep_html => 1);
+    my $te = HTML::TableExtract->new( depth => $params->{depth}, 
+				      count => $params->{count}, 
+				      gridmap => $params->{gridmap}, 
+				      keep_html => 1);
     $te->parse($content);
 
     foreach my $ts ($te->table_states) {

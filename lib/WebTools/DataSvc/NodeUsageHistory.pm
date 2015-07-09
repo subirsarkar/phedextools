@@ -34,6 +34,6 @@ sub wget
 1;
 __END__
 package main;
-my $obj = new WebTools::DataSvc::NodeUsageHistory;
+my $obj = WebTools::DataSvc::NodeUsageHistory->new;
 my $info = $obj->wget({ node => q|T2_IT_Pisa| });
 $obj->show;

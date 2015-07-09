@@ -28,6 +28,6 @@ sub wget
 1;
 __END__
 package main;
-my $obj = new WebTools::DataSvc::NodeUsage;
+my $obj = WebTools::DataSvc::NodeUsage->new;
 my $info = $obj->wget({ node => q|T2_IT_Pisa| });
 $obj->show;

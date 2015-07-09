@@ -70,7 +70,7 @@ sub debug
 sub getCommandOutput
 {
   my ($command, $ecode) = @_;  # exit code should be passed by reference 
-  my $fh = new IO::File qq[$command 2>/dev/null |];
+  my $fh = IO::File->new(qq[$command 2>/dev/null |]);
 
   unless (defined $fh and $fh) {
     carp qq|$command failed!, $!| if DEBUG; 
@@ -100,7 +100,7 @@ sub getCommandOutput
 sub readFile
 {
   my ($filename, $ecode) = @_;
-  my $fh = new IO::File $filename, 'r';
+  my $fh = IO::File->new($filename, 'r');
 
   unless (defined $fh and $fh) {
     carp qq|Failed to open $filename, $!| if DEBUG;
@@ -143,7 +143,7 @@ sub writeHTML
 {
   my ($htmlFile, $output) = @_;
   my $tmpFile = qq|$htmlFile.tmp|;
-  my $fh = new IO::File $tmpFile, 'w';
+  my $fh = IO::File->new($tmpFile, 'w');
   die qq|Failed to open $tmpFile, $!, stopped| unless ($fh && $fh->opened);
   print $fh $output;
   $fh->close;

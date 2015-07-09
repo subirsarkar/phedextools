@@ -42,6 +42,6 @@ sub wget
 1;
 __END__
 package main;
-my $obj = new WebTools::DataSvc::Links({ instance => q|debug| });
+my $obj = WebTools::DataSvc::Links->new({ instance => q|debug| });
 my $info = $obj->wget({ from => q|T2_IT_Pisa|, status => q|ok|, kind => q|WAN| });
 $obj->show;

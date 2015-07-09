@@ -32,7 +32,7 @@ sub wget
     push @blockList, $attr->{block};
   }
   else {
-    my $br = new WebTools::DataSvc::Blocks;
+    my $br = WebTools::DataSvc::Blocks->new;
     my $info = $br->wget($attr);
     push @blockList, keys %$info;
   }
@@ -73,7 +73,7 @@ sub wget
 1;
 __END__
 package main;
-my $obj = new WebTools::DataSvc::Files({ verbose => 1 });
+my $obj = WebTools::DataSvc::Files->new({ verbose => 1 });
 my $info = $obj->wget({  
                     node => q|T2_IT_Pisa|, 
                    block => q|/MinimumBias/Commissioning10-Apr21Skim_356_PreProduction_SD_EG-v1/RECO|,

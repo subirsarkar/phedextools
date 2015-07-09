@@ -20,7 +20,7 @@ sub new
   bless {
     _verbose => $attr->{verbose},
     _options => undef,
-      _agent => new LWP::UserAgent
+      _agent => LWP::UserAgent->new
   }, $class;
 }
 sub options
@@ -352,7 +352,7 @@ sub nodeusage
 
 1;
 __END__
-my $svc = new WebTools::PhedexSvc({ verbose => 1 });
+my $svc = WebTools::PhedexSvc->new({ verbose => 1 });
 $svc->query({ se => qq|cmsdcache.pi.infn.it| });
 my $files = $svc->files("/W5jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2224/GEN-SIM-DIGI-RECO#dea8e81b-308c-4d53-8c67-838c178ae26b");
 print Data::Dumper->Dump([$files], [qw/phedexfiles/]);
@@ -370,7 +370,7 @@ WebTools::PhedexSvc - Queries the PhEDEx data service to prepare a list of block
 
 =head1 SYNOPSIS
 
-  my $svc = new WebTools::PhedexSvc({ verbose => 0 });
+  my $svc = WebTools::PhedexSvc->new({ verbose => 0 });
   $svc->query({ se => qq|cmsdcache.pi.infn.it| });
   my $files = $svc->files("/W5jet_0ptw100-alpgen/CMSSW_1_5_2-CSA07-2224/GEN-SIM-DIGI-RECO");
   print join ("\n", sort keys %$files), "\n";

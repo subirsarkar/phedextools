@@ -32,7 +32,7 @@ sub wget
     push @blockList, $attr->{block};
   }
   else {
-    my $br = new WebTools::DataSvc::Blocks;
+    my $br = WebTools::DataSvc::Blocks->new;
     $br->wget($attr);
     push @blockList, keys %{$br->info};
   }
@@ -74,7 +74,7 @@ sub wget
 1;
 __END__
 package main;
-my $obj = new WebTools::DataSvc::MissingFiles;
+my $obj = WebTools::DataSvc::MissingFiles->new;
 $obj->wget({      node => q|T2_IT_Pisa|, 
                  block => q|/Cosmics/CRUZET4_v1_CRZT210_V1_TrackerPointing_v1/RECO|,
             subscribed => q|y|
