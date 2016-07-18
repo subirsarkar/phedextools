@@ -21,21 +21,23 @@ sub new
 sub wget
 {
   my ($self, $attr) = @_;
-  croak qq|Nodename or SE must be specified| 
-    unless (defined $attr->{node} or defined $attr->{se});
-  croak qq|dataset/block must be specified| unless defined $attr->{block};
+  croak q|Neither dataset/block nor Node/SE specified!| 
+    unless (defined $attr->{block} or defined $attr->{node} or defined $attr->{se});
 
   # handle the case only a dataset name is specified
-  my ($dset, $block) = split /#/, $attr->{block};
   my @blockList = ();
-  if (defined $block) {
-    push @blockList, $attr->{block};
+  if (defined $attr->{block}) {
+      my ($dset, $block) = split /#/, $attr->{block};
+      if (defined $block) {
+	  push @blockList, $attr->{block};
+      }
   }
-  else {
+  unless (scalar @blockList) {
     my $br = WebTools::DataSvc::Blocks->new;
     my $info = $br->wget($attr);
     push @blockList, keys %$info;
   }
+  print join("\n", @blockList), "\n" if $self->{_verbose};
   my $params = __PACKAGE__->params($attr, [
                   'node', 
                   'se', 
@@ -48,22 +50,36 @@ sub wget
 		  'group'], 0);
   my $info = {};
   for my $block (@blockList) {  
+    my $dset = (split /#/, $block)[0];
+
     # escape the offending # character in the blockname string
     $block = join (uri_escape("#"), (split /#/, $block));
     my $p = qq|block=| . $block . $params;
 
     # Note that we do not deal with the 'lfn'
-    my $content = $self->content({ cmd => q|fileReplicas|, options => $p });
+    my $content = $self->content({ 
+	    cmd => q|fileReplicas|, 
+	options => $p,
+        verbose => $self->{_verbose} 
+    });
 
     my $files = $content->{PHEDEX}{BLOCK}[0]{FILE};
     for my $file (@$files) {
-      print join(' ', $file->{NAME}, 
-                      $file->{BYTES}), "\n" if $self->{_verbose};
+      print join(' ', '==> Fileinfo', $file->{NAME}, 
+        $file->{BYTES}, join (' ', (split /,/, $file->{CHECKSUM}))), "\n" if $self->{_verbose};
+
+      my $nodes = [];
+      for my $replica (@{$file->{REPLICA}}) {
+        push @$nodes, $replica->{NODE} if defined $replica->{NODE};
+      }
       $info->{$file->{NAME}} = 
       {
+           file => $file->{NAME},
            size => $file->{BYTES}, 
+       checksum => $file->{CHECKSUM}, 
         dataset => $dset,
-          block => uri_unescape($block)
+          block => uri_unescape($block),
+          nodes => $nodes
       };
     }
   }

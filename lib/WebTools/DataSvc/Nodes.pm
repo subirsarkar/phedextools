@@ -17,7 +17,7 @@ sub new
   bless $self, $class;
 }
 
-sub get
+sub wget
 {
   my ($self, $attr) = @_;
   my $params = '';

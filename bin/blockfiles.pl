@@ -7,7 +7,7 @@ use warnings;
 use Getopt::Long;
 use Data::Dumper;
 
-use WebTools::DataSvc::FileInfo;
+#use WebTools::DataSvc::FileInfo;
 use WebTools::DataSvc::Files;
 
 # Command line options with Getopt::Long

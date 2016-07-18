@@ -1,4 +1,4 @@
-BASEDIR=$HOME/public/phedex
+BASEDIR=$HOME/workspace/public/phedextools
 if [ -n "$PERL5LIB" ]; then
   echo $PERL5LIB | grep $BASEDIR/lib > /dev/null
   [ $? -eq 0 ] || export PERL5LIB=$BASEDIR/lib:$PERL5LIB

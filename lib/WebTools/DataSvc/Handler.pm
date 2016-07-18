@@ -17,7 +17,7 @@ sub new
   bless {
     _instance => $attr->{instance} || q|prod|,
      _verbose => $attr->{verbose} || 0,
-       _agent => LWP::UserAgent->new
+       _agent => LWP::UserAgent->new (ssl_opts => { verify_hostname => 0 })
   }, $class;
 }
 sub content
@@ -27,6 +27,7 @@ sub content
   my $cmd     = $attr->{cmd};
   my $tmout   = $attr->{timeout} || 20;
   my $options = $attr->{options} || undef;
+  my $verbose = $attr->{verbose} || 0;
 
   my $instance = $self->{_instance};
   my $query = sprintf qq|$_bquery/$instance/$cmd|;
