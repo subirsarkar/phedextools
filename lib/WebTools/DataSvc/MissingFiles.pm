@@ -21,17 +21,18 @@ sub new
 sub wget
 {
   my ($self, $attr) = @_;
-  croak qq|Nodename or SE must be specified| 
+  carp qq|Neither Nodename nor SE specified, will take long| 
     unless (defined $attr->{node} or defined $attr->{se});
-  croak qq|dataset/block must be specified| unless defined $attr->{block};
 
   # handle the case only a dataset name is specified
-  my ($dset, $block) = split /#/, $attr->{block};
   my @blockList = ();
-  if (defined $block) {
-    push @blockList, $attr->{block};
+  if (defined $attr->{block}) {
+      my ($dset, $block) = split /#/, $attr->{block};
+      if (defined $block) {
+	  push @blockList, $attr->{block};
+      }
   }
-  else {
+  unless (scalar @blockList) {
     my $br = WebTools::DataSvc::Blocks->new;
     $br->wget($attr);
     push @blockList, keys %{$br->info};
@@ -48,6 +49,8 @@ sub wget
   }
   my $info = {};
   for my $block (@blockList) {  
+    my $dset = (split /#/, $block)[0];
+
     # escape the offending # character in the blockname string
     $block = join (uri_escape("#"), (split /#/, $block));
     my $p = qq|block=|.$block.$params;
@@ -57,11 +60,14 @@ sub wget
 
     my $files = $content->{PHEDEX}{BLOCK}[0]{FILE};
     for my $file (@$files) {
-      print join(' ', $file->{NAME}, 
-                      $file->{BYTES}), "\n" if $self->{_verbose};
+      print '>>> FileInfo: '. join(' ', $file->{NAME}, $file->{BYTES}, 
+                              join(' ', split (/,/, $file->{CHECKSUM}))), 
+                              "\n" if $self->{_verbose};
       $info->{$file->{NAME}} = 
       {
+           file => $file->{NAME},
            size => $file->{BYTES}, 
+       checksum => $file->{CHECKSUM},
         dataset => $dset,
           block => uri_unescape($block)
       };

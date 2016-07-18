@@ -23,6 +23,7 @@ sub wget
   croak qq|Nodename or SE must be specified| 
     unless (defined $attr->{node} or defined $attr->{se});
 
+  my $tmout = $attr->{timeout} || 120;
   my $params = qq|block=|.(defined $attr->{block} ? qq|$attr->{block}| : '');
   $params .= uri_escape(qq|*|) . __PACKAGE__->params($attr, ['node', 
                                                              'se', 
@@ -33,7 +34,9 @@ sub wget
                                                              'custodial',
                                                              'group'], 0);
   print "PARAMS: $params\n" if $self->{_verbose};
-  my $content = $self->content({ cmd => q|blockReplicas|, options => $params });
+  my $content = $self->content({ cmd => q|blockReplicas|, 
+                             options => $params, 
+                             timeout => $tmout });
 
   my $blocks = $content->{PHEDEX}{BLOCK};
   my $info = {};
@@ -47,11 +50,16 @@ sub wget
         bytes => $block->{BYTES},
       replica => 
       {      
+               node => $block->{REPLICA}[0]{NODE},
+                 se => $block->{REPLICA}[0]{SE},
               group => $block->{REPLICA}[0]{GROUP} || undef, 
          subscribed => $block->{REPLICA}[0]{SUBSCRIBED},
            complete => $block->{REPLICA}[0]{COMPLETE},
               files => $block->{REPLICA}[0]{FILES},
-              bytes => $block->{REPLICA}[0]{BYTES}
+              bytes => $block->{REPLICA}[0]{BYTES},
+          custodial => $block->{REPLICA}[0]{CUSTODIAL},
+        time_create => $block->{REPLICA}[0]{TIME_CREATE},
+        time_update => $block->{REPLICA}[0]{TIME_UPDATE}
       }
     };
   }
