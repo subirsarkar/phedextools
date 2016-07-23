@@ -24,25 +24,27 @@ sub wget
     unless (defined $attr->{node} or defined $attr->{se});
 
   my $tmout = $attr->{timeout} || 120;
-
-  my $params = qq|block=|.(defined $attr->{block} ? qq|$attr->{block}| : '');
-  $params .= uri_escape(qq|*|) . __PACKAGE__->params($attr, ['node', 
-                                                             'se', 
-                                                             'update_since', 
-                                                             'create_since',
-                                                             'complete',
-                                                             'subscribed',
-                                                             'custodial',
-                                                             'group'], 0);
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node 
+                                               se 
+                                               update_since 
+                                               create_since
+                                               complete
+                                               subscribed
+                                               custodial
+                                               group/ ], 1);
+  $params .= (defined $attr->{block} ? qq|&block=$attr->{block}| . uri_escape(qq|*|) : q||);
   print "PARAMS: $params\n" if $self->{_verbose};
+
+  # Fetch data
   my $content = $self->content({ 
         cmd => q|subscriptions|, 
     options => $params, 
     timeout => $tmout,
     verbose => $self->{_verbose} 
   });
-  my $info = {};
 
+  my $info = {};
   my $list = $content->{PHEDEX}{DATASET};
   for my $d (@$list) {
     print join(' ', $d->{NAME}, 

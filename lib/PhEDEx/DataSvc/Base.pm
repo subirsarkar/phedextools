@@ -44,11 +44,12 @@ sub params
 {
   my ($pkg, $attr, $tagList, $dflag) = @_;
   $dflag = 1 unless defined $dflag;
-  my $params = '';
+  my $params = q||;
   for my $tag (@$tagList)
   {
     $params .= qq|&$tag=$attr->{$tag}| if defined $attr->{$tag};
   }
+  # if needed strip the first & char
   $params =~ s/^&// if $dflag>0;
   $params;
 }

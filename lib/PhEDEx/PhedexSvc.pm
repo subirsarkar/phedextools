@@ -28,12 +28,12 @@ sub options
   my ($self, $attr) = @_;
   $self->{_attr} = $attr;
   
-  my $params = '';
+  my $params = q||;
   if (defined $attr) {
     $params .= sprintf qq|&node=%s|,     $attr->{node} if exists $attr->{node};
     $params .= sprintf qq|&se=%s|,       $attr->{se}   if exists $attr->{se};
     $params .= sprintf qq|&complete=%s|, $attr->{complete}
-      if (defined $attr->{complete} and  $attr->{complete} ne 'na');
+      if (defined $attr->{complete} and  $attr->{complete} ne q|na|);
     $params .= sprintf qq|&create_since=%s|, $attr->{create_since} if defined $attr->{create_since}; # unix timestamp
     $params .= sprintf qq|&group=%s|, $attr->{group} if defined $attr->{group};
     $params .= sprintf qq|&limit=%d|, $attr->{limit} if defined $attr->{limit};

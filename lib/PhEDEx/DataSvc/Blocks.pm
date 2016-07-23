@@ -6,7 +6,7 @@ use Carp;
 use Data::Dumper;
 use URI::Escape;
 
-use base 'PhEDEx::DataSvc::Base';
+use base q|PhEDEx::DataSvc::Base|;
 
 sub new
 {
@@ -24,17 +24,21 @@ sub wget
     unless (defined $attr->{node} or defined $attr->{se});
 
   my $tmout = $attr->{timeout} || 120;
-  my $params = ((defined $attr->{block}) 
-     ? q|dataset=| . qq|$attr->{block}| . uri_escape(qq|*|)
-     : q||) . __PACKAGE__->params($attr, [q|node|, 
-					  q|se|, 
-					  q|update_since|, 
-					  q|create_since|,
-					  q|complete|,
-					  q|subscribed|,
-					  q|custodial|,
-					  q|group|], 0);
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node 
+					       se 
+					       update_since 
+					       create_since
+					       complete
+					       subscribed
+					       custodial
+					       group/ ], 1);
+  $params .= defined $attr->{block} 
+     ? q|&dataset=| . qq|$attr->{block}| . uri_escape(qq|*|)
+     : q||; 
   print "PARAMS: $params\n" if $self->{_verbose};
+
+  # Fetch data
   my $content = $self->content({ cmd => q|blockReplicas|, 
                              options => $params, 
                              timeout => $tmout });

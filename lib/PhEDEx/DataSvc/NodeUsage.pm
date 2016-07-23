@@ -19,8 +19,12 @@ sub new
 sub wget
 {
   my ($self, $attr) = @_;
+  # Build parameter list
   my $params = (defined $attr->{node}) ? qq|node=$attr->{node}| : undef;
+
+  # Fetch data
   my $content = $self->content({ cmd => q|nodeusage|, options => $params });
+
   my $info = $content->{PHEDEX}{NODE}[0];
   $self->info($info);
 }

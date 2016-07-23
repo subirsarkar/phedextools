@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use Data::Dumper;
 
-use base 'PhEDEx::DataSvc::Base';
+use base q|PhEDEx::DataSvc::Base|;
 
 sub new
 {
@@ -19,8 +19,12 @@ sub new
 sub wget
 {
   my ($self, $attr) = @_;
+  # Build parameter list
   my $params = (defined $attr->{group}) ? qq|group=$attr->{group}| : undef;
+
+  # Fetch data
   my $content = $self->content({ cmd => q|groups|, options => $params });
+
   my $info = {};
   my $list = $content->{PHEDEX}{GROUP};
   for my $group (@$list) {

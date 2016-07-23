@@ -6,7 +6,7 @@ use Carp;
 use Data::Dumper;
 use URI::Escape;
 
-use base 'PhEDEx::DataSvc::Base';
+use base q|PhEDEx::DataSvc::Base|;
 use PhEDEx::DataSvc::Blocks;
 
 sub new
@@ -37,23 +37,20 @@ sub wget
     $br->wget($attr);
     push @blockList, keys %{$br->info};
   }
-  my $params = '';
-  for my $tag (qw/node 
-                  se 
-                  subscribed
-                  custodial
-                  group
-               /)
-  {
-    $params .= qq|&$tag=$attr->{$tag}| if defined $attr->{$tag};
-  }
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node
+                                               se
+                                               subscribed
+                                               custodial
+                                               group/ ], 1);
+  # Fetch data for each block in a loop
   my $info = {};
   for my $block (@blockList) {  
     my $dset = (split /#/, $block)[0];
 
     # escape the offending # character in the blockname string
     $block = join (uri_escape("#"), (split /#/, $block));
-    my $p = qq|block=|.$block.$params;
+    my $p = $params . qq|&block=$block|;
 
     # Note that we do not deal with the 'lfn'
     my $content = $self->content({ cmd => q|missingfiles|, options => $p });

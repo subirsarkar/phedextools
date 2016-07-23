@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use Data::Dumper;
 
-use base 'PhEDEx::DataSvc::Base';
+use base q|PhEDEx::DataSvc::Base|;
 
 sub new
 {
@@ -21,17 +21,14 @@ sub wget
   my ($self, $attr) = @_;
   croak qq|Nodename or SE must be specified| 
     unless (defined $attr->{node} or defined $attr->{se});
-  my $params = '';
-  for my $tag (qw/node 
-                  se 
-                  group
-               /)
-  {
-    $params .= qq|&$tag=$attr->{$tag}| if defined $attr->{$tag};
-  }
-  $params =~ s/^&//; 
 
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node 
+                                               se 
+                                               group/ ], 1);
+  # Fetch data
   my $content = $self->content({ cmd => q|groupusage|, options => $params });
+
   my $list = $content->{PHEDEX}{NODE}[0]->{GROUP};
   my $info = {};
   for my $group (@$list) {

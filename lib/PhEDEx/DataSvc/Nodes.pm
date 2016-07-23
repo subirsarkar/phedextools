@@ -20,6 +20,8 @@ sub new
 sub wget
 {
   my ($self, $attr) = @_;
+
+  # Build the parameter list
   my $params = q||;
   if (defined $attr->{nodes}) {
     for my $node (@{$attr->{nodes}}) {
@@ -28,7 +30,10 @@ sub wget
   }
   $params .= qq|&noempty=1| if defined $attr->{noempty};
   $params =~ s/^&//;
+
+  # Fetch data
   my $content = $self->content({ cmd => q|nodes|, options => $params });
+
   my $info = {};
   my $list = $content->{PHEDEX}{NODE};
   for my $node (@$list) {

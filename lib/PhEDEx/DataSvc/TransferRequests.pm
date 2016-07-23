@@ -21,12 +21,15 @@ sub wget
   my ($self, $attr) = @_;
   croak qq|Node must be specified!| unless defined $attr->{node};
 
-  my $params = qq|node=$attr->{node}|;
-  for my $tag (qw/request group limit create_since/)
-  {
-    $params .= qq|&$tag=$attr->{$tag}| if defined $attr->{$tag};
-  }
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node 
+                                               request
+                                               group
+                                               limit
+                                               create_since/ ], 1);
+  # Fetch data
   my $content = $self->content({ cmd => q|groups|, options => $params });
+
   my $info = {};
   my $list = $content->{PHEDEX}{REQUEST};
   for my $req (@$list) {

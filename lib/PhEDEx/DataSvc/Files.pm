@@ -6,7 +6,7 @@ use Carp;
 use Data::Dumper;
 use URI::Escape;
 
-use base 'PhEDEx::DataSvc::Base';
+use base q|PhEDEx::DataSvc::Base|;
 use PhEDEx::DataSvc::Blocks;
 
 sub new
@@ -27,10 +27,10 @@ sub wget
   # handle the case only a dataset name is specified
   my @blockList = ();
   if (defined $attr->{block}) {
-      my ($dset, $block) = split /#/, $attr->{block};
-      if (defined $block) {
-	  push @blockList, $attr->{block};
-      }
+    my ($dset, $block) = split /#/, $attr->{block};
+    if (defined $block) {
+      push @blockList, $attr->{block};
+    }
   }
   unless (scalar @blockList) {
     my $br = PhEDEx::DataSvc::Blocks->new;
@@ -38,23 +38,26 @@ sub wget
     push @blockList, keys %$info;
   }
   print join("\n", @blockList), "\n" if $self->{_verbose};
-  my $params = __PACKAGE__->params($attr, [
-                  'node', 
-                  'se', 
-                  'update_since', 
-                  'create_since',
-                  'complete',
-                  'dist_complete',
-                  'subscribed',
-                  'custodial',
-		  'group'], 0);
+
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node 
+                                               se 
+                                               update_since 
+                                               create_since
+                                               complete
+                                               dist_complete
+                                               subscribed
+                                               custodial
+		                               group/ ], 1);
+
+  # Fetch data for each block and work on the retrived data
   my $info = {};
   for my $block (@blockList) {  
     my $dset = (split /#/, $block)[0];
 
     # escape the offending # character in the blockname string
     $block = join (uri_escape("#"), (split /#/, $block));
-    my $p = qq|block=| . $block . $params;
+    my $p = $params . qq|&block=$block|;
 
     # Note that we do not deal with the 'lfn'
     my $content = $self->content({ 

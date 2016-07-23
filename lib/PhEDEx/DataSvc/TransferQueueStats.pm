@@ -25,13 +25,12 @@ sub wget
   croak qq|Both source and destination may not be specified!| 
     if (defined $attr->{from} and defined $attr->{to});
 
-  my $params = '';
-  for my $tag (qw/from to/)
-  {
-    $params .= qq|$tag=$attr->{$tag}| if defined $attr->{$tag};
-  }
-
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/from 
+                                               to/ ], 1);
+  # Fetch data
   my $content = $self->content({ cmd => q|transferqueuestats|, options => $params });
+
   my $links = $content->{PHEDEX}{LINK};
   my $info = {};
   for my $link (@$links) {

@@ -21,12 +21,15 @@ sub wget
   my ($self, $attr) = @_;
   croak qq|Node must be specified!| unless defined $attr->{node};
 
-  my $params = qq|node=$attr->{node}|;
-  for my $tag (qw/starttime endtime binwidth/)
-  {
-    $params .= qq|&$tag=$attr->{$tag}| if defined $attr->{$tag};
-  }
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/node 
+                                               starttime 
+                                               endtime 
+                                               binwidth/ ], 1);
+
+  # Fetch data
   my $content = $self->content({ cmd => q|nodeusagehistory|, options => $params });
+
   my $info = $content->{PHEDEX}{NODE}[0]->{USAGE}[0];
   $self->info($info);
 }

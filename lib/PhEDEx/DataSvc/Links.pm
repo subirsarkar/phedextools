@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use Data::Dumper;
 
-use base 'PhEDEx::DataSvc::Base';
+use base q|PhEDEx::DataSvc::Base|;
 
 sub new
 {
@@ -19,15 +19,22 @@ sub new
 sub wget
 {
   my ($self, $attr) = @_;
-  croak qq|Either of source and destination must be specified!| 
+  croak q|Either of source and destination must be specified!| 
     unless (defined $attr->{from} or defined $attr->{to});
 
   croak qq|Both source and destination may not be specified!| 
     if (defined $attr->{from} and defined $attr->{to});
 
-  my $params = __PACKAGE__->params($attr, ['from', 'to', 'status', 'kind']);
+  # Build paramater list
+  my $params = __PACKAGE__->params($attr, [ qw/from 
+                                               to 
+                                               status 
+                                               kind/ ], 1);
   print "PARAMS: $params\n" if $self->{_verbose};
+
+  # Fetch data
   my $content = $self->content({ cmd => q|links|, options => $params });
+
   my $links = $content->{PHEDEX}{LINK};
   my $info = {};
   for my $link (@$links) {

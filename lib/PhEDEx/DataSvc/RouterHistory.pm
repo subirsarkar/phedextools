@@ -25,8 +25,15 @@ sub wget
   croak qq|Both source and destination may not be specified!| 
     if (defined $attr->{from} and defined $attr->{to});
 
-  my $params = __PACKAGE__->params($attr, ['from', 'to', 'starttime', 'endtime', 'binwidth'], 1);
+  # Build parameter list
+  my $params = __PACKAGE__->params($attr, [ qw/from
+                                               to
+                                               starttime
+                                               endtime
+                                               binwidth/ ], 1);
+  # Fetch data
   my $content = $self->content({ cmd => q|routerhistory|, options => $params });
+
   my $links = $content->{PHEDEX}{LINK};
   my $info = {};
   for my $link (@$links) {
