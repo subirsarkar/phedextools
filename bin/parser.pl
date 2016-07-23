@@ -14,7 +14,7 @@ use Math::BigInt;
 use POSIX qw/strftime/;
 use Template::Alloy;
 
-use WebTools::PhedexSvc;
+use PhEDEx::PhedexSvc;
 use BaseTools::Util qw/trim writeHTML/;
 
 use constant MB2By => 1024**2;
@@ -138,7 +138,7 @@ sub main
   readOptions;
 
   # create a PhedexSvc object
-  my $svc = WebTools::PhedexSvc->new({ verbose => 0 });
+  my $svc = PhEDEx::PhedexSvc->new({ verbose => 0 });
 
   #  get [node,id] mapping
   my $nodemap = $svc->nodemap;

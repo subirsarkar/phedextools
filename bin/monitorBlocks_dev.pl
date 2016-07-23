@@ -5,7 +5,7 @@ use warnings;
 use POSIX qw/strftime/;
 use Template::Alloy;
 
-use WebTools::PhedexSvc;
+use PhEDEx::PhedexSvc;
 use BaseTools::Util qw/writeHTML/;
 
 our $htmlFile = qq|blockinfo.html|;
@@ -14,7 +14,7 @@ our $tmplFile = qq|blockinfo.html.tmpl|;
 my $list = shift || die qq|Usage: $0 list [dest_se]|;
 my $dest_se = shift || qq|cmsdcache.pi.infn.it|;
 
-my $svc = new WebTools::PhedexSvc({ verbose => 0 });
+my $svc = PhEDEx::PhedexSvc->new({ verbose => 0 });
 
 # Create the Template::Alloy object and create the html from template
 my $tt = Template::Alloy->new(

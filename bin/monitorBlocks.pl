@@ -3,12 +3,12 @@
 use strict;
 use warnings;
 
-use WebTools::PhedexSvc;
+use PhEDEx::PhedexSvc;
 
 my $list    = shift || die qq|Usage: $0 list [dest_se]|;
 my $dest_se = shift || qq|cmsdcache.pi.infn.it|;
 
-my $svc = WebTools::PhedexSvc->new({ verbose => 0 });
+my $svc = PhEDEx::PhedexSvc->new({ verbose => 0 });
 
 printf "%112s %6s %6s\n", "Block", "Source", "Dest";
 

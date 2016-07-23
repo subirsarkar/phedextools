@@ -4,12 +4,12 @@ package main;
 
 use strict;
 use warnings;
-use WebTools::DataSvc::FileInfo;
+use PhEDEx::DataSvc::Files;
 
 sub main
 {
   my $infile = shift;
-  my $obj = WebTools::DataSvc::FileInfo->new({ verbose => 0 });
+  my $obj = PhEDEx::DataSvc::Files->new({ verbose => 0 });
   open INPUT, $infile || die qq|Failed to open $infile!|;
   while (<INPUT>) {
     chop;

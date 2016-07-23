@@ -7,7 +7,7 @@ use Getopt::Long;
 use Data::Dumper;
 use File::Basename;
 
-use WebTools::PhedexSvc;
+use PhEDEx::PhedexSvc;
 use BaseTools::Util qw/trim/;
 
 # Command line options with Getopt::Long
@@ -53,7 +53,7 @@ sub main
   close INPUT;
 
   # phedex file list
-  my $phsvc = new WebTools::PhedexSvc({ verbose => $verbose });
+  my $phsvc = PhEDEx::PhedexSvc->new({ verbose => $verbose });
   $phsvc->query({ node => $node, complete => qq|y| });
 
   my $map = {};

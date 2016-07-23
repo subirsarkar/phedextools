@@ -6,8 +6,8 @@ use strict;
 use warnings;
 use Getopt::Long;
 
-use WebTools::DataSvc::FileInfo;
-use WebTools::DataSvc::MissingFiles;
+use PhEDEx::DataSvc::FileInfo;
+use PhEDEx::DataSvc::MissingFiles;
 
 my $verbose;
 my $node;
@@ -46,15 +46,15 @@ sub main
 {
   readOptions;
  
-  my $obj = WebTools::DataSvc::MissingFiles->new({ verbose => 0 });
+  my $obj = PhEDEx::DataSvc::MissingFiles->new({ verbose => 0 });
   my $info = $obj->wget({ node => $node, group => $group });
   my @files = keys %$info;
   print join ("\n", @files), "\n";
-  my $fobj = WebTools::DataSvc::FileInfo->new({ verbose => 0 });
+  my $fobj = PhEDEx::DataSvc::FileInfo->new({ verbose => 0 });
   for my $lfn (@files) {
     my $info = $fobj->wget({ lfn => $lfn });
     print "\n";
-    WebTools::DataSvc::FileInfo->pprint($info);
+    PhEDEx::DataSvc::FileInfo->pprint($info);
   }
 }
 main;

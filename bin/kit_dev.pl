@@ -6,7 +6,7 @@ use Data::Dumper;
 use Getopt::Long;
 
 use BaseTools::Util qw/trim/;
-use WebTools::PhedexSvc;
+use PhEDEx::PhedexSvc;
 
 $| = 1;
 
@@ -49,7 +49,7 @@ sub main
   my $pinfo = {};
   if ($lookup) {
     my $params = { se => 'cmssrm-fzk.gridka.de', complete => 'y' };
-    my $phsvc  = new WebTools::PhedexSvc({ verbose => 1 });
+    my $phsvc  = PhEDEx::PhedexSvc->new({ verbose => 1 });
     $phsvc->options($params);
     my @list = ();
     my $blocks = $phsvc->blocks;

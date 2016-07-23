@@ -8,38 +8,36 @@ use Data::Dumper;
 use Term::ProgressBar;
 use List::Util qw/min max/;
 
-use WebTools::DataSvc::Blocks;
-use WebTools::DataSvc::Files;
-use WebTools::DataSvc::FileInfo;
+use PhEDEx::DataSvc::Blocks;
+use PhEDEx::DataSvc::Files;
 
 sub main
 {
   my $node = shift;
-  my $bobj = new WebTools::DataSvc::Blocks({ verbose => 0 });
-  my $info = $bobj->wget({
-     node => $node
-  });
+  my $verbose = 1;
+  my $bobj = PhEDEx::DataSvc::Blocks->new({ verbose => $verbose });
+  my $blockinfo = $bobj->wget({ node => $node });
 
-  my $nblocks = scalar keys %$info;
+  my $nblocks = scalar keys %$blockinfo;
   my $iblock = 0;
   my $next_update = -1;
-  my $progress = new Term::ProgressBar({ name => sprintf (qq|Blocks: %d, processed|, $nblocks), 
-                                          count => $nblocks, 
-                                         remove => 1, 
-                                            ETA => 'linear' });
+  my $progress = Term::ProgressBar->new({ name => sprintf (qq|Blocks: %d, processed|, $nblocks), 
+                                         count => $nblocks, 
+				        remove => 1, 
+                                           ETA => 'linear' });
   $progress->minor(0);
   my $it = max 1, int($nblocks/100);
 
-  for my $block (keys %$info) {
+  for my $block (keys %$blockinfo) {
     unless ( (++$iblock)%$it ) {
       $next_update = $progress->update($iblock) if $iblock >= $next_update;
     }
-    my $fobj = new WebTools::DataSvc::Files({ verbose => 0 });
-    my $info = $fobj->wget({
+    my $fobj = PhEDEx::DataSvc::Files->new({ verbose => $verbose });
+    my $fileinfo = $fobj->wget({
        node => $node,
       block => $block
     });
-    print join ("\n", keys %$info), "\n";
+    print join ("\n", keys %$fileinfo), "\n";
   }
   $progress->update($iblock) if $iblock > $next_update;
 }

@@ -6,14 +6,13 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-use WebTools::DataSvc::FileInfo;
-use WebTools::DataSvc::Files;
+use PhEDEx::DataSvc::Files;
 
 my $verbose = 0;
 sub main
 {
   my $infile = shift;
-  my $obj = WebTools::DataSvc::Files->new({ verbose => 0 });
+  my $obj = PhEDEx::DataSvc::Files->new({ verbose => 0 });
   open INPUT, $infile || die qq|Failed to open $infile!|;
   while (<INPUT>) {
     print;

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Data::Dumper;
-use WebTools::PhedexSvc;
+use PhEDEx::PhedexSvc;
 use BaseTools::Util qw/trim/;
 
 use constant DEBUG => 0;
@@ -14,7 +14,7 @@ while (<INPUT>) {
   my ($dataset, $frac, $src_se) = (split);
   $se = qq|cmssrm.fnal.gov| unless $src_se;
   print join(', ', $dataset, $frac, $src_se), "\n" if DEBUG;
-  my $svc = WebTools::PhedexSvc->new({ verbose => 0 });
+  my $svc = PhEDEx::PhedexSvc->new({ verbose => 0 });
   $svc->query({ se => $src_se });
   my $blocks = $svc->blocks(trim($dataset));
 

@@ -8,7 +8,7 @@ use File::Basename;
 use File::Copy;
 use JSON;
 
-use WebTools::PhedexSvc;
+use PhEDEx::DataSvc::Nodes;
 use BaseTools::Util qw/trim/;
 
 our $verbose = 1;
@@ -17,16 +17,12 @@ our $tmpfile = qq|$jsonfile.tmp|;
 
 sub main
 {
-  # create a PhedexSvc object and get the [node,id] mapping
-  my $svc = WebTools::PhedexSvc->new({ verbose => 0 });
-  my $nodemap;  
-  eval {
-    $nodemap = $svc->nodemap;
-  };
-  die $@ if $@;
-  print STDERR Data::Dumper->Dump([$nodemap], [qw/nodemap/]) if $verbose;
-  #my @sites = grep { (/^T2/ or /^T3/) and !/CAF/ } sort keys %$nodemap;
-  my @sites = grep { /^T[1-3]/ and (!/CAF/ and !/Export/ and !/Buffer/)} sort keys %$nodemap;
+  # create a Nodes object and get the [node,id] mapping
+  my $pobj = PhEDEx::DataSvc::Nodes->new({ verbose => 1 });
+  print ref $pobj, "\n";
+  my $nodes = $pobj->wget;
+  print STDERR Data::Dumper->Dump([$nodes], [qw/nodes/]) if $verbose;
+  my @sites = grep { /^T[1-3]/ and (!/CAF/ and !/Export/ and !/Buffer/)} sort keys %$nodes;
 
   my $json = JSON->new(pretty => 1, delimiter => 1, skipinvalid => 1);
   my $jstxt = ($json->can('encode'))
