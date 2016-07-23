@@ -71,7 +71,7 @@ EOD
 1;
 __END__
 package main;
-my $obj = new PhEDEx::DataSvc::FileInfo({ verbose => 1 });
+my $obj = PhEDEx::DataSvc::FileInfo->new({ verbose => 1 });
 my $info = $obj->wget({  
          lfn => qq|/store/mc/Spring10/MinBias_TuneD6T_7TeV-pythia6/GEN-SIM-RECO/START3X_V26B-v1/0011/768322A3-1F5E-DF11-B020-003048CDCD46.root|,
   subscribed => 'y'
